@@ -7,6 +7,7 @@ table{
     border-collapse: collapse;
     margin: 100px auto;
     background-color: #ffffff;
+    min-width: 250px;
 }
 tr.thirdRow td{
     border-bottom: solid 1px #000000;
@@ -38,4 +39,16 @@ td{
     &.thirdCol{
         border-right: solid 1px #000000;
     }
+}
+
+@media (max-width:500px){
+	td input{
+		font-size: 3vw;
+	}
+}
+
+@media (max-width:250px){
+	td input{
+		font-size: 8px;
+	}
 }
