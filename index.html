@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 	<title>Sudoku 2016</title>
@@ -13,8 +14,8 @@
 	<form id="wrapper"></form>
 
 	<div class="solution">
-	<h4>Solution</h4>
-	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Sudoku-by-L2G-20050714_solution.svg/480px-Sudoku-by-L2G-20050714_solution.svg.png" alt="Answer">
+		<h4>Solution</h4>
+		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Sudoku-by-L2G-20050714_solution.svg/480px-Sudoku-by-L2G-20050714_solution.svg.png" alt="Answer">
 	</div>
 
 <script>
@@ -141,13 +142,11 @@ function validateBlock(block, sudokuArray){
 //-----------------------------
 function hasError(sudokuArray){
   var error=false;
-
     for(var i=0; i<=8; i++){
       if (validateRow(i, sudokuArray) === false) {error=true;}
       if (validateCol(i, sudokuArray) === false) {error=true;}
       if (validateBlock(i, sudokuArray) === false) {error=true;}
     }
-
   return error;
 }
 
@@ -155,23 +154,26 @@ function hasError(sudokuArray){
 
 //Start a fresh game
 //-----------------------------------------------
-function startGame(sudokuPuzzle, sudokuSolution){
+function startGame(sudokuPuzzle){
 
-	sudokuSolution = sudokuPuzzle;
+	var newSudokuSolution = jQuery.extend(true, {}, sudokuPuzzle);
 	$('#wrapper').empty();
-	generateGameBoard(sudokuSolution);
+	generateGameBoard(newSudokuSolution);
+	return newSudokuSolution;
 }
 
 
 
+
+//---------------------------
 $(document).ready(function(){
-	//Sample puzzle with reference to sample on Wiki for "Sudoku"
+	//From https://en.wikipedia.org/wiki/Sudoku
 	var sudokuPuzzle = [5,3,0,0,7,0,0,0,0,6,0,0,1,9,5,0,0,0,0,9,8,0,0,0,0,6,0,8,0,0,0,6,0,0,0,3,4,0,0,8,0,3,0,0,1,7,0,0,0,2,0,0,0,6,0,6,0,0,0,0,2,8,0,0,0,0,4,1,9,0,0,5,0,0,0,0,8,0,0,7,9];
 	//A working buffer of the puzzle - in case there's a need to decouple in the future.
-	var sudokuSolution=[];
+	var sudokuSolution=new Object();
 
 	//Begin by generating the game board
-	startGame(sudokuPuzzle, sudokuSolution);
+	sudokuSolution = startGame(sudokuPuzzle);
 
 	//User event handlers
 	//On focus - erases current entry
@@ -191,7 +193,7 @@ $(document).ready(function(){
 		sudokuSolution[cellNumber]=0;
 
 		//Check validity of input
-		if((inputValue>0) && (inputValue<10)){ //valid input
+		if((inputValue>0) && (inputValue<10)){ //valid input value
 			//Can this input fit into it's row, column and box?
 			if(isPossibleRow(inputValue,rowNumber,sudokuSolution) &&
 			isPossibleCol(inputValue,colNumber,sudokuSolution) &&
@@ -214,10 +216,16 @@ $(document).ready(function(){
 
 		//Check if puzzle is solved
 		if(!hasError(sudokuSolution)){
-		$('#modal').show();
+			$('#modal').show();
 		}
 	});//$('#wrapper input').keyup()
 
+	//Restart game
+	$('#modal').click(function(){
+		$(this).hide();
+		console.log(sudokuPuzzle);
+		sudokuSolution = startGame(sudokuPuzzle);
+	});
 
 	//Prevent scrolling of numeric input field
 	$('form').on('focus', 'input[type=number]', function (e) {
@@ -228,12 +236,6 @@ $(document).ready(function(){
 	$('form').on('blur', 'input[type=number]', function (e) {
 		$(this).off('mousewheel.disableScroll')
 	})
-
-	//Restart game
-	$('#modal').click(function(){
-		$(this).hide();
-		startGame(sudokuPuzzle, sudokuSolution);
-	});
 
 });//$(document).ready()
 
