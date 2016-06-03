@@ -37,6 +37,11 @@ td input.guess {
 td input.error {
   color: #ff0000;
 }
+td input::-webkit-outer-spin-button,
+td input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 td.thirdCol {
   border-right: solid 1px #000000;
 }

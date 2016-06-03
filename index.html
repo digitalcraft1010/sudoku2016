@@ -100,9 +100,51 @@ $(document).ready(function(){
 		if (!$(this).hasClass("given")) {$(this).val('');}
 	});
 
+	//On keyup
+	$('#wrapper input').keyup(function(){ //a number had been entered
+		$(this).blur(); //only one character is allowed
+		var inputValid = true;
+		var inputValue = Number($(this).val());
+		var cellNumber = $(this).attr('id').slice(4); //cell number is also the index to sudokuSolution array, value 0 to 80.
+		var rowNumber = Math.floor(cellNumber/9); //row number 0 to 8
+		var colNumber = cellNumber%9; //column number 0 to 8
+		var blockNumber = Math.floor(rowNumber / 3) * 3 + Math.floor(colNumber / 3); //3x3 block number 0 to 8
+		sudokuSolution[cellNumber]=0;
+
+		//Check validity of input
+		if((inputValue>0) && (inputValue<10)){ //valid input
+			//Can this input fit into it's row, column and box?
+			if(isPossibleRow(inputValue,rowNumber,sudokuSolution) &&
+			isPossibleCol(inputValue,colNumber,sudokuSolution) &&
+			isPossibleBlock(inputValue,blockNumber,sudokuSolution)){
+				//Yes it can
+				$(this).removeClass('error'); //set valid potential font color
+				$(this).addClass('guess');
+			} else {
+				//No it cannot
+				$(this).removeClass('guess'); //set error font color
+				$(this).addClass('error');
+			}
+		} else { //invalid input
+			$(this).val('');
+			$(this).removeClass('guess');
+			$(this).removeClass('error');
+		}
+		//store the new value in array
+		sudokuSolution[cellNumber]=inputValue;
+
+		//Check if puzzle is solved
+		if(!hasError(sudokuSolution)){
+		$('#modal').show();
+		}
+	});//$('#wrapper input').keyup()
+
+
 	//Prevent scrolling of numeric input field
 	$('form').on('focus', 'input[type=number]', function (e) {
-		$(this).on('mousewheel.disableScroll', function (e) { e.preventDefault() })
+		$(this).on('mousewheel.disableScroll', function (e) {
+			e.preventDefault()
+		})
 	})
 	$('form').on('blur', 'input[type=number]', function (e) {
 		$(this).off('mousewheel.disableScroll')
