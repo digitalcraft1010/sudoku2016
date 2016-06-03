@@ -1,3 +1,7 @@
+@min1024: ~"only screen and (min-width : 1024px)";
+@max500: ~"only screen and (max-width:500px)";
+@max250: ~"only screen and (max-width:250px)";
+
 body{
 	background-color: #ededed;
     margin: 0;
@@ -9,11 +13,12 @@ body{
     width: 100%;
     height: 100%;
     background-color: #888888;
-    opacity: 0.5;
+    opacity: 0.9;
     text-align: center;
     h1{
         margin-top: 20px;
         font-family: arial, helvetica, sans-serif;
+        color: #ffffff;
     }
 }
 table{
@@ -53,28 +58,25 @@ td{
         	-webkit-appearance: none;
   			margin: 0;
         }
+        @media @min1024{ font-size: 46px; }
+        @media @max500{ font-size: 3vw; }
+        @media @max250{ font-size: 8px; }
     }
     &.thirdCol{
         border-right: solid 1px #000000;
     }
 }
-
-
-@media only screen
-and (min-width : 1024px){
-    td input{
-        font-size: 32px;
-    }
-}
-
-@media (max-width:500px){
-	td input{
-		font-size: 3vw;
+.solution{
+	h4{
+		display: block;
+		text-align: center;
+		font-family: arial, helvetica, sans-serif;
+	}
+	img{
+		margin: 0 auto;
+		display: block;
+		width: auto;
+		max-width: %;
 	}
 }
 
-@media (max-width:250px){
-	td input{
-		font-size: 8px;
-	}
-}
