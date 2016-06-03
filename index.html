@@ -12,6 +12,7 @@
 
 
 <script>
+//--------------------------------------
 function generateGameBoard(sudokuArray){
 	var htmlBuffer = "";
 	var sudokuIndex=0;
@@ -46,6 +47,39 @@ function generateGameBoard(sudokuArray){
 	$('#wrapper').html(htmlBuffer);
 }//function generateGameBoard()
 
+
+
+//User input validation
+//-----------------------------------------------
+// is the number valid in this row?
+function isPossibleRow(number, row, sudokuArray){
+  for (var i=0; i<=8; i++) {
+    if (sudokuArray[row*9+i] == number) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// is the number valid in this column?
+function isPossibleCol(number, col, sudokuArray) {
+  for (var i=0; i<=8; i++) {
+    if (sudokuArray[col+9*i] == number) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// is the number valid in this 3x3 block?
+function isPossibleBlock(number, block, sudokuArray) {
+  for (var i=0; i<=8; i++) {
+    if (sudokuArray[Math.floor(block/3)*27+i%3+9*Math.floor(i/3)+3*(block%3)] == number) {
+      return false;
+    }
+  }
+  return true;
+}
 
 
 
