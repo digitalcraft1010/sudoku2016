@@ -84,6 +84,70 @@ function isPossibleBlock(number, block, sudokuArray) {
 
 
 
+//Checking the validity of row, column and block
+//-------------------------------------
+//Check row validity
+function validateRow(row, sudokuArray){
+  var totalValue = 0;
+
+  for(var i=0; i<=8; i++){
+    totalValue += sudokuArray[row*9+i];
+  }
+  if (totalValue === 45){ //45 = 1 + 2 + 3... + 9, this can work because of no duplicate and no invalid value
+    return true;
+  } else {
+    return false;
+  }
+}
+
+//Check column validity
+function validateCol(col, sudokuArray){
+  var totalValue = 0;
+
+  for (var i=0; i<=8; i++) {
+    totalValue += sudokuArray[col+i*9];
+  }
+  if (totalValue === 45){ //45 = 1 + 2 + 3... + 9, this can work because of no duplicate and no invalid value
+    return true;
+  } else {
+    return false;
+  }
+}
+
+//Check block validity
+function validateBlock(block, sudokuArray){
+  var totalValue = 0;
+
+  for (var i=0; i<=8; i++) {
+    totalValue += sudokuArray[Math.floor(block/3)*27+i%3+9*Math.floor(i/3)+3*(block%3)];
+  }
+  if (totalValue === 45){ //45 = 1 + 2 + 3... + 9, this can work because of no duplicate and no invalid value
+    return true;
+  } else {
+    return false;
+  }
+}
+
+
+
+
+//Check if the table contains error
+//-----------------------------
+function hasError(sudokuArray){
+  var error=false;
+
+    for(var i=0; i<=8; i++){
+      if (validateRow(i, sudokuArray) === false) {error=true;}
+      if (validateCol(i, sudokuArray) === false) {error=true;}
+      if (validateBlock(i, sudokuArray) === false) {error=true;}
+    }
+
+  return error;
+}
+
+
+
+
 $(document).ready(function(){
 	//Sample puzzle with reference to sample on Wiki for "Sudoku"
 	var sudokuPuzzle = [5,3,0,0,7,0,0,0,0,6,0,0,1,9,5,0,0,0,0,9,8,0,0,0,0,6,0,8,0,0,0,6,0,0,0,3,4,0,0,8,0,3,0,0,1,7,0,0,0,2,0,0,0,6,0,6,0,0,0,0,2,8,0,0,0,0,4,1,9,0,0,5,0,0,0,0,8,0,0,7,9];
