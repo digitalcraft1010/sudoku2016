@@ -18,10 +18,28 @@ function generateGameBoard(sudokuArray){
 
 	htmlBuffer += "<table>";
 	for(var i=1; i<=9; i++){
-		for (var j=1; j<=9; j++){}
-	}
-	htmlBuffer += "</table>";
+		htmlBuffer +=  ((i%3 == 0 )? '<tr class="thirdRow' : '<tr') +'">'; //generate rows and identified every 3rd rows
 
+		for (var j=1; j<=9; j++){//generate cell and input field in cell
+			if (j%3==0){
+				htmlBuffer += '<td class="thirdCol">';
+			} else {
+				htmlBuffer += '<td>';
+			}
+			htmlBuffer  += '<input type="number" size="1" maxlength="1" id="cell' + sudokuIndex + '" ';
+			if (sudokuArray[sudokuIndex] == 0){
+				htmlBuffer  += 'value=""></td>';
+			} else {
+				htmlBuffer += 'value="';
+				htmlBuffer += sudokuArray[sudokuIndex];
+				htmlBuffer  += '" class="given" readonly></td>'; //contain data from puzzle
+			}
+			sudokuIndex++;
+		}//for j
+		htmlBuffer += '</tr>';
+	}//for i
+	htmlBuffer += "</table>";
+	$('#wrapper').html(htmlBuffer);
 }//function generateGameBoard()
 
 
