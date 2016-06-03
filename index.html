@@ -153,16 +153,25 @@ function hasError(sudokuArray){
 
 
 
+//Start a fresh game
+//-----------------------------------------------
+function startGame(sudokuPuzzle, sudokuSolution){
+
+	sudokuSolution = sudokuPuzzle;
+	$('#wrapper').empty();
+	generateGameBoard(sudokuSolution);
+}
+
+
 
 $(document).ready(function(){
 	//Sample puzzle with reference to sample on Wiki for "Sudoku"
 	var sudokuPuzzle = [5,3,0,0,7,0,0,0,0,6,0,0,1,9,5,0,0,0,0,9,8,0,0,0,0,6,0,8,0,0,0,6,0,0,0,3,4,0,0,8,0,3,0,0,1,7,0,0,0,2,0,0,0,6,0,6,0,0,0,0,2,8,0,0,0,0,4,1,9,0,0,5,0,0,0,0,8,0,0,7,9];
-	//A working buffer of the puzzle - in case there's a need to decouple inthe future.
+	//A working buffer of the puzzle - in case there's a need to decouple in the future.
 	var sudokuSolution=[];
 
 	//Begin by generating the game board
-	sudokuSolution = sudokuPuzzle;
-	generateGameBoard(sudokuSolution);
+	startGame(sudokuPuzzle, sudokuSolution);
 
 	//User event handlers
 	//On focus - erases current entry
@@ -219,6 +228,12 @@ $(document).ready(function(){
 	$('form').on('blur', 'input[type=number]', function (e) {
 		$(this).off('mousewheel.disableScroll')
 	})
+
+	//Restart game
+	$('#modal').click(function(){
+		$(this).hide();
+		startGame(sudokuPuzzle, sudokuSolution);
+	});
 
 });//$(document).ready()
 
